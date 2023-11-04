@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Automating No-Rebase-Consent</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: linear-gradient(to bottom right, lightgray, rgb(88, 89, 78));
+    }
+
+    .container {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .message {
+      margin: 10px;
+      font-size: 36px;
+      padding: 0px;
+      text-align: center;
+    }
+    .text-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .reasons {
+      position: relative;
+      flex: 1;
+      margin: 0 10px;
+      border: 1px solid rgba(0, 0, 0, 0.018);
+      background-color: rgba(195, 193, 193, 0.5);
+      border-radius: 10px;
+      padding: 10px;
+      line-height: 150%;
+      font-size: 14px;
+      box-sizing: border-box;
+      font-family: sans-serif;
+    }
+
+    .subtitle {
+      font-size: 24px;
+      margin-top: 60px;
+      font-family: sans-serif;
+    }
+
+    .cut-and-paste-box {
+      margin: 10px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      padding: 8px;
+      font-family: monospace;
+      background-color: rgba(255, 255, 255, 0.8);
+      text-align: center;
+    }
+    .ml {
+        text-align: left;
+    }
+    a {
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+<div class="container" id="fullpage">
+    <div class="buttons"></div>
+    <div class="message"">
+      Automating the commit trailer
+    </div>
+    <div class="boxes">
+        Part 1. Git client configuration (global):
+        <pre class="cut-and-paste-box ml">
+$ git config --global trailer.consent.key "Author-Rebase-Consent: "
+$ git config --global trailer.consent.cmd 'echo "https://No-rebase.github.io" && : '
+$ git config --global trailer.consent.ifExists "replace"
+        </pre>
+        Part 2. Per-repository commit message hook:
+        <pre class="cut-and-paste-box ml">
+cat >> .git/hooks/commit-msg <<-"EOF"
+    #!/bin/sh
+    git interpret-trailers --trim-empty --trailer "consent:no" "$1" > "$1.new"
+    mv "$1.new" "$1"
+EOF
+chmod +x .git/hooks/commit-msg
+        </pre>
+        Part 2b. Commit message hook improved:
+        <p>It is possible to automatically add the commit_msg hook to every cloned repo, using a repo template.
+          See the "<a href="https://git-scm.com/docs/git-init#_template_directory" >TEMPLATE DIRECTORY</a>" section of git-init, and the '<code>init.templateDir</code>' config variable.</p>
+            <div class="reasons">
+                Explanation:
+                <p>
+        <ul>
+          <li>The git client configuration defines the trailer. It does not cause git to insert it.</li>
+          <li>The commit message hook is the magic that appends the trailer whenever a commit is made.</li>
+        </ul>
+        <p>Also see the <a href="https://git-scm.com/docs/git-interpret-trailers">interpret-trailers man page</a>.</p>
+        </div>
+    </div>
+    <div class="subtitle">
+        Friends don't let friends git and rebase
+      </div>
+    </div>
+    </body>
+</html>

@@ -1,0 +1,7 @@
+# Cache everything else for ever and a day (1 year)
+/*
+    Cache-Control: max-age=31622400, immutable
+
+# Cache the front page for 1 day
+/
+    Cache-Control: max-age=86400, immutable

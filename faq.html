@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+/* style.css */
+
+body {
+    margin: 0;
+  padding: 0;
+      font-family: sans-serif;
+      background: linear-gradient(to bottom right, lightgray, rgb(88, 89, 78));
+      background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+    }
+/* style.css */
+
+header {
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+}
+
+h1 {
+  margin: 0;
+}
+
+main {
+  padding: 20px;
+}
+
+section {
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 18px;
+  margin: 0 0 10px;
+}
+li {
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+p {
+  margin: 20px;
+  line-height: 1.4;
+}
+a {
+      text-decoration: none;
+    }
+
+</style>
+  <title>Author-Rebase-Consent FAQ</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Author-Rebase-Consent FAQ</h1>
+  </header>
+
+  <main>
+    <section>
+        <h2>Q1. Is the repo owner obligated to avoid rebasing?</h2>
+        <p>No. The contributor is stating a (strong) preference that their commit not be rebased. The owner is free to ignore this clear preference.</p>
+    </section>
+
+    <section>
+        <h2>Q2. Merging the commit would create an undesired relationship betwen branches in my repo.</h2>
+        <p>If the commit was based on the wrong parent, ask the contributor to re-base it to the correct branch.</p>
+    </section>
+
+    <section>
+      <h2>Q3. As a contributor, how can I prevent a repo owner rebasing my commit?</h2>
+      <p>You can't, but you can discourage it:</p>
+      <ul>
+        <li>Add the Author-Rebase-Consent trailer to your commits <b>clearly states</b> your preference.</li>
+        <li><b>Enable <a href="https://docs.github.com/en/authentication/managing-commit-signature-verification/displaying-verification-statuses-for-all-of-your-commits">Vigilent Mode</a></b>.
+            This works if you sign all commits uploaded to GitHub. Your rebased commits will be marked as "Unverified" or "Partially Verified", but never as "Verified".
+            A repo maintainer might see it as undesirable to have commits in their repo which are not "Verified".
+        </li>
+        <li><b>Don't contribute</b> your time and effort to maintainers that don't respect them.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Q4. Is this about Copyright?</h2>
+      <p>No... Maybe.</p>
+      <p> The term Copyright is commonly undertood to apply to the objects stored in a git repo, ie, the "software" or "content".</p>
+      <p>Rebase Consent is about the commit object alone. When you don't consent to rebasing, you are stating that you don't allow modifications to the commit object you created.
+      This covers the commit message and headers like dates, author committer, parent SHA, tree SHA (both SHA's are references to other objects).
+      </p>
+
+      <p>So far there has not been much discourse over what copyright might apply to commit objects we create.</p>
+      <p>Maybe there should be. You are invited to <a href="https://github.com/orgs/no-rebase/discussions">discuss</a></p>
+    </section>
+
+    <!-- Add more sections for additional questions -->
+  </main>
+
+</body>
+</html>

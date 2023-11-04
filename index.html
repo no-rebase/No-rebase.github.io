@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>No Rebase Consent</title>
+  <!-- Use cloudflare for all static content so it can be cached
+    since github caches everything for 10-minutes, unconfigurable.
+    CF will cache for 1 year
+  -->
+  <base href="//no-rebase.pages.dev/">
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: linear-gradient(to bottom right, lightgray, rgb(88, 89, 78));
+    }
+
+    .container {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .message {
+      margin-top: 10px;
+      font-size: 36px;
+      padding: 0px;
+      text-align: center;
+    }
+    .tooltipster-base {
+      margin: 4px;
+      padding: 0px 0px 0px 100px;
+    }
+    .text-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .button-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: auto;
+      }
+      button {
+        border-radius: 6px;
+
+      }
+    .boxes {
+      display: flex;
+      justify-content: center;
+      width: 80%;
+      max-width: 800px;
+      margin-top: 20px;
+      z-index: 1;
+    }
+
+    .box {
+      position: relative;
+      flex: 1;
+      height: 100px;
+      margin: 0 10px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      background-color: rgba(216, 216, 216, 0.119);
+      border-radius: 10px;
+      padding: 10px;
+      box-sizing: border-box;
+      font-family: sans-serif;
+    }
+
+    .reasons {
+      position: relative;
+      flex: 1;
+      margin: 0 10px;
+      border: 1px solid rgba(0, 0, 0, 0.018);
+      background-color: rgba(195, 193, 193, 0.5);
+      border-radius: 10px;
+      padding: 10px;
+      line-height: 150%;
+      font-size: 14px;
+      box-sizing: border-box;
+      font-family: sans-serif;
+    }
+
+    .button-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: green;
+      color: white;
+      border-radius: 5px;
+      padding: 10px;
+      font-family: sans-serif;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      z-index: 5;
+    }
+
+    .stamp-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(1.5);
+      width: 60px;
+      height: 60px;
+      opacity: 0.8;
+      z-index: 6;
+    }
+    .subtitle {
+      font-size: 24px;
+      margin-top: 50px;
+      font-family: sans-serif;
+    }
+
+    .cut-and-paste-box {
+      margin: 10px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      padding: 8px;
+      font-family: monospace;
+      background-color: rgba(255, 255, 255, 0.8);
+      text-align: center;
+    }
+    .ok {
+      background-image: url('ok.svg');
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: right;
+    }
+    .ok svg { display: none; }
+    .bug {
+      z-index: 2;
+    }
+    .vote {
+      display: none;
+      position: fixed;
+      width: 1px;
+      height: 1px;
+      z-index: 0;
+      opacity: 0.0;
+    }
+    .cast {display: block;}
+    a {
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+<div class="container" id="fullpage">
+    <div class="buttons"></div>
+    <div class="message" id="generic-message">
+      I do not consent to Rebasing my PR
+    </div>
+    <div class="message" id="personal-message"></div>
+    <div class="boxes">
+      <div class="box" id="bugs">
+        <div class="button-overlay">Rebase and Merge</div>
+        <svg class="stamp-overlay" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"  stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.9))">
+          <circle cx="12" cy="12" r="10" fill="none" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </div>
+      <div class="box" id="will-merge">
+        <div class="button-overlay">Merge Pull Request</div>
+        <svg class="stamp-overlay" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.9))">
+          <path d="M20 6L9 17l-5-5" />
+        </svg>
+      </div>
+    </div>
+    <div class="boxes">
+      <div class="reasons">
+        <ul>
+          <li>It is disrespectful to me, as it attributes a facsimile of my work to me.</li>
+          <li>Falsifies the sequence of commits.</li>
+          <li>It can introduce bugs attributed to me.</li>
+          <li>Bugs love hiding behind rebases.</li>
+        </ul>
+        <div class="text-box">
+          <div class="button-container" id="no">
+            <button><span>My repo, my rules. 👎</span></button>
+            <div class="vote"><iframe referrerpolicy="no-referrer" id="no-vote"></iframe></div>
+          </div>
+        </div>
+      </div>
+      <div class="reasons">
+        <ul>
+          <li>It acknowledges me and my real work as is.</li>
+          <li>It shows me respect.</li>
+          <li>It is <a href="https://blog.mergesium.com/2023/11/never-rebase-contributions.html">easier to track down bugs</a>.</li>
+        </ul>
+        <div class="text-box">
+          <div class="button-container" id="yes">
+            <button><span>Sure! 👍</span></button>
+            <div class="vote"><iframe referrerpolicy="no-referrer" id="yes-vote"></iframe></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="subtitle">
+        Join the movement.
+      </div>
+      <div class="cut-and-paste-box">
+        Author-Rebase-Consent: https://No-rebase.github.io
+      </div>
+      <div class="address">
+        <a href="automate.html">Automate</a> the trailer.
+        <a href="https://github.com/orgs/no-rebase/discussions">Discuss</a>.
+        <a href="faq.html">FAQ</a>.
+
+      </div>
+    </div>
+    <script defer type='text/javascript' src='bug-min.js'></script>
+    <script>
+      // If a query is given, make the consent msg personalized with github hovercard
+      // const urlParams = new URLSearchParams(window.location.search);
+      // const queryParam = urlParams[0];
+      var q = window.location.search?.substring(1);
+      if (q) {
+        const hoverscript = document.createElement('script');
+        hoverscript.src = 'github-hovercard.js';
+
+        const octicons = document.createElement('link');
+        octicons.rel = 'stylesheet';
+        octicons.href = 'https://cdnjs.cloudflare.com/ajax/libs/octicons/4.4.0/font/octicons.css';
+
+        const hovercard_style = document.createElement('link');
+        hovercard_style.rel = 'stylesheet';
+        hovercard_style.href = 'github-hovercard.css';
+
+        document.getElementById("generic-message").style.display = 'none';
+        var personal_msg = document.getElementById("personal-message");
+        personal_msg.style.display = 'block';
+
+        const userLink = document.createElement('a');
+        const message = document.createElement('span');
+        userLink.href = 'https://github.com/' + q;
+        userLink.textContent = q;
+
+        message.textContent = ' does not consent to Rebasing their PR';
+        personal_msg.appendChild(userLink);
+        personal_msg.appendChild(message);
+
+        document.body.appendChild(hoverscript);
+        document.head.appendChild(octicons);
+        document.head.appendChild(hovercard_style);
+      }      
+      var spider, flies;
+      var willmerge;
+      document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById("no").addEventListener("click", DownVote);
+        document.getElementById("yes").addEventListener("click", UpVote);
+        // fruit flies:
+        flies = new BugController({
+                element: "bugs",
+                canFly: true,
+                minBugs : 3,
+                maxBugs : 20,
+                edge_resistance: 0,
+                minSpeed: 4,
+                maxSpeed: 10,
+                mouseOver: "multiply",
+                minTimeBetweenMultipy: 1,
+              });
+
+        function DownVoted() {
+          spider = spider || new SpiderController({
+              element: "fullpage",
+              minBugs: 1,
+              maxBugs: 1,
+              edge_resistance: 0,
+              minSpeed: 20,
+              maxSpeed: 20,
+              mouseOver: "nothing",
+            });
+        }
+        function DownVote() {
+            DownVoted();
+            document.cookie = "downvote=true; path=/";
+            document.getElementById("no-vote").src = "//no-rebase.pages.dev/no";
+        }
+        function UpVote() {
+          flies.kill(2);
+          if (!willmerge) {
+            document.getElementById("will-merge").classList.add("ok");
+            document.getElementById("yes-vote").src = "//no-rebase.pages.dev/yes";
+            willmerge = true;
+          }
+        }
+        if (document.cookie.includes("downvote"))
+          DownVoted();
+      });
+    </script>
+    </body>
+</html>
